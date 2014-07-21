@@ -9,6 +9,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -107,26 +108,35 @@ public class MainActivity extends Activity implements View.OnClickListener, Load
 
             v = mInflater.inflate(R.layout.db_item, null);
 
-            TextView idTextView = (TextView) v.findViewById(R.id.text_id);
-            TextView titleTextView = (TextView) v.findViewById(R.id.text_title);
-            TextView contentTextView = (TextView) v.findViewById(R.id.text_content);
+            Item item = new Item();
+            item.idTextView = (TextView) v.findViewById(R.id.text_id);
+            item.titleTextView = (TextView) v.findViewById(R.id.text_title);
+            item.contentTextView = (TextView) v.findViewById(R.id.text_content);
 
-            idTextView.setText(Integer.toString(cursor.getInt(0)));
-            titleTextView.setText(cursor.getString(1));
-            contentTextView.setText(cursor.getString(2));
+            item.idTextView.setText(Integer.toString(cursor.getInt(0)));
+            item.titleTextView.setText(cursor.getString(1));
+            item.contentTextView.setText(cursor.getString(2));
 
+            v.setTag(item);
             return v;
         }
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
-            TextView idTextView = (TextView) view.findViewById(R.id.text_id);
-            TextView titleTextView = (TextView) view.findViewById(R.id.text_title);
-            TextView contentTextView = (TextView) view.findViewById(R.id.text_content);
+            long start = System.currentTimeMillis();
 
-            idTextView.setText(Integer.toString(cursor.getInt(0)));
-            titleTextView.setText(cursor.getString(1));
-            contentTextView.setText(cursor.getString(2));
+            Item item = (Item) view.getTag();
+            item.idTextView.setText(Integer.toString(cursor.getInt(0)));
+            item.titleTextView.setText(cursor.getString(1));
+            item.contentTextView.setText(cursor.getString(2));
+
+            Log.d("Elvis", "time: " + (System.currentTimeMillis() - start));
+        }
+
+        private class Item {
+            public TextView idTextView;
+            public TextView titleTextView;
+            public TextView contentTextView;
         }
     }
 }
