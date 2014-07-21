@@ -88,8 +88,13 @@ public class MainActivity extends Activity implements View.OnClickListener, Load
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        cursorAdapter = new DBAdapter(this, cursor, true);
-        mDataListView.setAdapter(cursorAdapter);
+        if (cursorAdapter == null) {
+            cursorAdapter = new DBAdapter(this, cursor, true);
+            mDataListView.setAdapter(cursorAdapter);
+        } else {
+            cursorAdapter.changeCursor(cursor);
+        }
+
     }
 
     @Override
